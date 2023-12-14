@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import Dataset
 from sklearn.feature_extraction.image import extract_patches_2d
 import numpy as np
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 from src.conf import PATCH_SIZE, PATCH_NUMBER, NUMBER_IMAGES, NOISE_STD
 
 
@@ -153,7 +153,7 @@ def _generate_sv_data(hsi: HyperspectralImage, X, endmembers_1_estim, abundances
 
     sv_X, sv_A_array, sv_S = np.zeros(X_pert.shape), [], np.zeros(S_pert.shape)
 
-    for k in tqdm(range(X.shape[1])):
+    for k in (range(X.shape[1])):
         sv_X_k, sv_A, sv_S_k = _spectral_variability_model(k, X_pert, A_pert, S_pert)
         sv_X[:, k] = sv_X_k
         sv_A_array.append(sv_A)

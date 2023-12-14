@@ -24,7 +24,7 @@ def train_model(model, hsi_data, dataloader, loss, num_epochs, n_sources, need_p
         running_loss = 0
 
         for batch in tqdm(dataloader):
-            inputs_X = batch['X']
+            inputs_X = batch['X'].to(device)
 
             if 'A' in batch and 'S' in batch:
                 inputs_A = batch['A'].to(device)
@@ -35,7 +35,7 @@ def train_model(model, hsi_data, dataloader, loss, num_epochs, n_sources, need_p
             optimizer.zero_grad()
 
             # forward
-            X_pred, A_pred, S_pred = model(inputs_X.to(device))
+            X_pred, A_pred, S_pred = model(inputs_X)
 
             loss_value = loss(X_pred, A_pred, S_pred, inputs_X, inputs_A, inputs_S)
 
@@ -61,8 +61,8 @@ def train_model(model, hsi_data, dataloader, loss, num_epochs, n_sources, need_p
 
 def _plot_while_training(model, hsi_data, n_sources):
     model.eval()
-    pred, endmemb, abund = model(torch.Tensor(hsi_data[None, :, :, :]))
-    pred, endmemb, abund = pred.detach().numpy(), endmemb.detach().numpy(), abund.detach().numpy()
+    pred, endmemb, abund = model(torch.Tensor(hsi_data[None, :, :, :]).to(device))
+    pred, endmemb, abund = pred.cpu().detach().numpy(), endmemb.cpu().detach().numpy(), abund.cpu().detach().numpy()
 
     plt.figure(figsize=(6, 4))
     for ii in range(n_sources):
