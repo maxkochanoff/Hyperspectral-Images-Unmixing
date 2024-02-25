@@ -43,8 +43,7 @@ def sv_loss(X_pred_batch, A_pred, S_pred_batch, sv_X_batch, sv_A_batch, sv_S_bat
     return total_loss
 
 
-def balance_loss(X_pred_batch, A_pred, S_pred_batch, sv_X_batch, sv_A_batch, sv_S_batch):
-    ALPHA = 0.3
+def balance_loss(X_pred_batch, A_pred, S_pred_batch, sv_X_batch, sv_A_batch, sv_S_batch, alpha=0):
     _sv_loss = sv_loss(X_pred_batch, A_pred, S_pred_batch, sv_X_batch, sv_A_batch, sv_S_batch)
     _sad_loss = sad_loss(X_pred_batch, A_pred, S_pred_batch, sv_X_batch, sv_A_batch, sv_S_batch)
-    return ALPHA * _sad_loss + (1 - ALPHA) * _sv_loss
+    return alpha * _sad_loss + (1 - alpha) * _sv_loss

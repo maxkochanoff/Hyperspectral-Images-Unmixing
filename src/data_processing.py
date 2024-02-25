@@ -50,6 +50,29 @@ class OriginalImageDataset(torch.utils.data.Dataset):
             return {'X': torch.Tensor(self.X)}
 
 
+class VaeDataset(torch.utils.data.Dataset):
+    def __init__(self, X_list, endmb_list, abndn_list):
+        self.X_patches = []
+        self.A_patches = []
+        self.S_patches = []
+
+        for i in range(len(X_list)):
+            patches = extract_patches_2d(X_list[i], PATCH_SIZE, PATCH_NUMBER)
+            patches = np.moveaxis(patches, -1, 1)
+            for j in range(len(patches)):
+                self.X_patches.append(patches)
+                self.A_patches.append(endmb_list[i])
+                self.S_patches.append(abndn_list[i])
+
+    def __len__(self):
+        return len(self.X_patches)
+
+    def __getitem__(self, idx):
+        return {'X': self.X_patches[idx],
+                'A': self.A_patches[idx],
+                'S': self.S_patches[idx]}
+
+
 def _f(x, x1, y1, x2, y2):
     a = (y2 - y1) / (x2 - x1 + 1e-7)
     b = y1 - a * x1
@@ -290,9 +313,9 @@ class PerturbedSVDataPatches(torch.utils.data.Dataset):
         name_file_A = f'temp_data/honest_sv_patches/im_{idx}_A.npy'
         name_file_S = f'temp_data/honest_sv_patches/im_{idx}_S.npy'
 
-        sv_X_patch = np.load(name_file_X)
-        sv_A_patch = np.load(name_file_A)
-        sv_S_patch = np.load(name_file_S)
+        sv_X_patch = np.load(name_file_X, allow_pickle=True)
+        sv_A_patch = np.load(name_file_A, allow_pickle=True)
+        sv_S_patch = np.load(name_file_S, allow_pickle=True)
 
         return {
             'X': torch.Tensor(sv_X_patch),

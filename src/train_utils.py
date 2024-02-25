@@ -66,13 +66,19 @@ def _plot_while_training(model, hsi_data, n_sources):
 
     plt.figure(figsize=(6, 4))
     for ii in range(n_sources):
-        ax = plt.subplot(2, n_sources // 2, ii + 1)
+        if n_sources == 3:
+            ax = plt.subplot(1, n_sources, ii + 1)
+        else:
+            ax = plt.subplot(2, n_sources // 2, ii + 1)
         ax.imshow(abund[0, ii, :, :])
     plt.show()
 
     plt.figure(figsize=(6, 4))
     for i in range(n_sources):
-        ax = plt.subplot(2, n_sources // 2, i + 1)
+        if n_sources == 3:
+            ax = plt.subplot(1, n_sources, i + 1)
+        else:
+            ax = plt.subplot(2, n_sources // 2, i + 1)
         ax.plot(endmemb[:, i])
     plt.show()
     model.train()
