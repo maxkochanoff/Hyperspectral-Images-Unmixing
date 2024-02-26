@@ -3,9 +3,11 @@ Hyperspectral imaging is a specific type of image data acquisition that uses sev
 As in most image processing tasks, two approaches are available : algorithmic one and network one, and each corresponds to a conceptual viewpoint on the problem. Generally, man can mathematically describe the situation and make assumptions about the matrices X, A, S in order to solve X = AS as precisely as possible. We can resolve it with for example the PALM algorithm. On the other hand, man can see unmixing as an application of the information compression task. Indeed, the goal is to simplify the pixel description from hundreds of channels to a few aboundances. And this corresponds to the compact data representation of autoencoder latent space.
 
 
+
+
 All in all, the study pipeline can be described in two parts:
 
-Part 1: Perturbations Approach
+**Part 1: Perturbations Approach**
 
 1. Getting the First Estimation: Denoting X as the hyperspectral image to unmix, the first step consists of applying an unsupervised unmixing algorithm to provide the initial estimate of A∗ and S∗. In this study, we utilize a neural approach with an Autoencoder.
 
@@ -17,7 +19,7 @@ Part 1: Perturbations Approach
 
 3. Autoencoder Training on Corresponding Data
 
-Part 2: Variational Autoencoder (VAE) Approach
+**Part 2: Variational Autoencoder (VAE) Approach**
 
 1. Constructing a Training Dataset for a VAE: By utilizing the original image, we can obtain approximations of endmembers as a result of the Vertex Component Analysis (VCA) algorithm's operation.
 
